@@ -1,0 +1,683 @@
+/* Basic Reset & Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fff;
+    /* Smooth page load transition */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+body.loaded { opacity: 1; }  /* Added via JS when page fully loaded */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 0.5em;
+    color: #111;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+p {
+    margin-bottom: 1em;
+}
+section {
+    padding: 4em 2em;  /* ample whitespace around sections */
+}
+.section-title {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: 2.5em;
+    font-weight: 800;
+    color: #222;
+    position: relative;
+    animation: fadeInUp 1s ease-out;
+}
+
+/* Navigation Bar Styles */
+.navbar {
+    position: sticky;
+    top: 0;
+    background: #f8f8f8;
+    padding: 0.5em 1em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;  /* stay above other content */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+.nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    position: relative;
+    padding: 0.25em 0;
+}
+.nav-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: #333;
+    transition: width 0.3s ease;
+}
+.nav-menu a:hover::after {
+    width: 100%;
+}
+.nav-toggle {
+    display: none; /* hidden on desktop, shown on mobile via media query */
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;    /* hide menu by default on mobile */
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #f8f8f8;
+        flex-direction: column;
+        width: 200px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        text-align: right;
+        padding: 1em;
+    }
+    .nav-menu li { margin: 0.5em 0; }
+    .nav-toggle {
+        display: block;
+        color: #333;
+    }
+    .nav-menu.open { display: flex; }  /* shown when toggled via JS */
+}
+
+/* Hero Section Styles */
+#hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+}
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* cover the entire section */
+    z-index: -1;       /* send video behind content */
+}
+.hero-content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: 0 1em;
+    /* Optional: semi-transparent overlay for better text contrast */
+}
+.hero-content::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4); /* dark overlay */
+    z-index: -1;
+}
+.hero-content h1 {
+    font-size: 3em;
+    margin-bottom: 0.3em;
+    animation: fadeInUp 1.2s ease-out;
+}
+.hero-content p {
+    font-size: 1.2em;
+    margin-bottom: 1.5em;
+}
+.booking-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5em;
+}
+.booking-form input, .booking-form button {
+    padding: 0.7em 1em;
+    font-size: 1em;
+    border: none;
+    border-radius: 4px;
+}
+.booking-form input {
+    /* Light translucent background for inputs over video */
+    background: rgba(255,255,255,0.9);
+    flex: 1 1 150px;
+}
+.booking-form input:focus {
+    outline: 2px solid #005f99; /* focus outline for accessibility */
+}
+.btn-primary {
+    background: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+.btn-primary:hover {
+    background: #005fcc;
+}
+
+/* Stats Section (Counters) */
+.stats-section {
+    display: flex;
+    justify-content: center;
+    background: #f0f0f0;
+    text-align: center;
+}
+.stat {
+    margin: 1em;
+}
+.stat .counter {
+    font-size: 2em;
+    font-weight: 600;
+    display: block;
+}
+.stat p {
+    margin-top: 0.2em;
+    font-weight: 500;
+}
+
+/* Featured Destinations */
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* responsive grid */
+    gap: 1.5em;
+}
+.destination-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: #fff;
+    transition: transform 0.3s;
+}
+.destination-card:hover {
+    transform: scale(1.02);
+}
+.destination-image {
+    width: 100%;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    /* For parallax effect on larger screens, optionally:
+       background-attachment: fixed; */
+    transition: transform 0.5s;
+}
+.destination-card:hover .destination-image {
+    transform: scale(1.1); /* zoom image slightly on hover */
+}
+.destination-info {
+    padding: 1em;
+}
+.destination-info h3 {
+    margin-bottom: 0.5em;
+}
+.destination-desc {
+    /* Initially hide description, reveal on hover */
+    opacity: 0;
+    max-height: 0;
+    transition: opacity 0.3s ease;
+}
+.destination-card:hover .destination-desc {
+    opacity: 1;
+    max-height: 100px; /* allow space for text */
+}
+
+/* Testimonials Slider */
+#testimonials {
+    position: relative;
+    overflow: hidden;
+}
+.testimonial-slider {
+    position: relative;
+    min-height: 120px;
+}
+.testimonial-item {
+    display: none;  /* hide all by default, show active one */
+    text-align: center;
+    font-style: italic;
+    font-size: 1.1em;
+    margin: 0 2em;
+}
+.testimonial-item.active {
+    display: block;
+    color: #111; /* clear black for light mode */
+}
+body.dark-mode .testimonial-item.active {
+    color: #ffffff !important;
+}
+.testimonial-author {
+    font-weight: 600;
+    margin-top: 0.5em;
+}
+.slider-prev, .slider-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: #fff;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 0 0.2em;
+}
+.slider-prev { left: 10px; }
+.slider-next { right: 10px; }
+.slider-prev:hover, .slider-next:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+body.dark-mode .slider-prev,
+body.dark-mode .slider-next {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+/* Special Offers */
+#offers {
+    text-align: center;
+    background: #e8f7ff;
+}
+.offer-title {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+}
+.offer-countdown {
+    font-size: 1.1em;
+    color: #d11149; /* a striking color for countdown */
+}
+
+/* Map Section */
+.map-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.map-image {
+    width: 100%;
+    display: block;
+}
+.map-marker {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: #ff5722;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    /* Simple pulse animation (optional) */
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Gallery */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 5px;
+}
+.gallery-grid img {
+    width: 100%;
+    display: block;
+    /* Optionally, make images all square by using object-fit if needed */
+    object-fit: cover;
+}
+
+/* Pricing Calculator */
+.pricing-calculator {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+.pricing-calculator label {
+    font-weight: 500;
+}
+.pricing-calculator input, .pricing-calculator select {
+    padding: 0.4em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.price-display {
+    margin-top: 0.5em;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+/* Contact Form */
+.contact-form {
+    max-width: 500px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1em;
+}
+.contact-form label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+}
+.contact-form input, .contact-form textarea {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.contact-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+.contact-form input:invalid, .contact-form textarea:invalid {
+    /* Highlight invalid fields (HTML5 validation) */
+    border-color: #e74c3c;
+}
+.contact-form input:focus, .contact-form textarea:focus {
+    outline: 2px solid #007BFF33;
+}
+
+/* Floating "Book Now" Button */
+.floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #28a745;
+    color: #fff;
+    padding: 0.8em 1em;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background 0.3s;
+    z-index: 1000;
+}
+.floating-btn:hover {
+    background: #218838;
+}
+
+/* Dark/Light Mode Styles */
+/* Default (light) theme is above; dark overrides below */
+body.dark-mode {
+    background: #121212;
+    color: #e0e0e0;
+}
+body.dark-mode .navbar {
+    background: #333;
+}
+body.dark-mode .nav-menu {
+    background: #333;
+}
+body.dark-mode .nav-menu a {
+    color: #fff;
+}
+body.dark-mode .hero-content::before {
+    /* Darken overlay more for contrast in dark mode if needed */
+    background: rgba(0,0,0,0.6);
+}
+body.dark-mode .btn-primary {
+    background: #005fcc;
+}
+body.dark-mode .btn-primary:hover {
+    background: #004099;
+}
+body.dark-mode .stats-section {
+    background: #1e1e1e;
+}
+body.dark-mode .destination-card {
+    background: #1f1f1f;
+    color: #e0e0e0;
+}
+body.dark-mode .offer-countdown {
+    color: #ff6b81;
+}
+
+body.dark-mode .contact-form input, 
+body.dark-mode .contact-form textarea {
+    background: #222;
+    color: #eee;
+    border: 1px solid #444;
+} 
+body.dark-mode .contact-form input:focus, 
+body.dark-mode .contact-form textarea:focus {
+    outline: 2px solid #007BFF66;
+}
+body.dark-mode .floating-btn {
+    background: #218838;
+}
+body.dark-mode .floating-btn:hover {
+    background: #1e7e34;
+}
+
+/* Reveal on Scroll Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+.reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Smooth scrolling behavior for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.modal.hidden {
+  display: none;
+}
+.modal-content {
+  background: #fff;
+  color: #111;
+  padding: 2rem;
+  max-width: 500px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+/* Additional Dark Mode Fixes */
+body.dark-mode .hero-content {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+body.dark-mode .hero-content h1,
+body.dark-mode .hero-content p {
+    color: #ffffff;
+}
+
+body.dark-mode .booking-form input,
+body.dark-mode .booking-form button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+body.dark-mode .chatbot-body,
+body.dark-mode .chat-window,
+body.dark-mode .chatbot-body button {
+    background-color: #1f1f1f;
+    color: #ffffff;
+}
+
+body.dark-mode .chat-message.bot {
+    background-color: #333;
+}
+
+body.dark-mode .chat-message.user {
+    background-color: #2a7f4f;
+}
+
+/* Dark Mode Section Headings and Pricing Labels Fix */
+body.dark-mode .section-title,
+body.dark-mode .price-display,
+body.dark-mode label,
+body.dark-mode h2,
+body.dark-mode h3 {
+  color: #ffffff;
+}
+
+body.dark-mode select,
+body.dark-mode .pricing-calculator input,
+body.dark-mode .pricing-calculator label {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #555;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+body.dark-mode #offers {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode #offers .section-title,
+body.dark-mode #offers .offer-title,
+body.dark-mode #offers .offer-countdown {
+  color: #ffffff;
+}
+body.dark-mode .modal-content {
+  background: #2a2a2a;
+  color: #f0f0f0;
+}
+/* Fullscreen and Minimize Effects for Chatbot Container */
+.chatbot-container.fullscreen {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    z-index: 10000;
+    border-radius: 0;
+    box-shadow: none;
+    transition: all 0.4s ease-in-out;
+}
+
+.chatbot-body.hidden {
+  display: none;
+}
+.chatbot-header {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px;
+  border-radius: 6px 6px 0 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: glowPulse 2s infinite ease-in-out;
+  position: relative;
+}
+
+.chatbot-header span {
+  z-index: 20;
+}
+
+#fullscreenToggle, #minimiseToggle {
+  background: rgba(0,0,0,0.2);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.emoji-picker {
+    position: absolute;
+    bottom: 50px;
+    left: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 5px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    z-index: 999;
+    max-width: 200px;
+}
+
+.emoji-picker span {
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: transform 0.2s;
+}
+
+.emoji-picker span:hover {
+    transform: scale(1.3);
+}
+
+.emoji-toggle {
+    background: none;
+    border: none;
+    font-size: 1.3em;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+body.dark-mode .emoji-picker {
+    background-color: #333;
+    border-color: #555;
+}
+
+body.dark-mode .emoji-picker span {
+    color: #fff;
+}

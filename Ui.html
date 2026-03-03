@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tourism Booking Website</title>
+  <!-- Google Fonts for modern sans-serif typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="stylesheet.css" />
+  <style>
+    .hero-content {
+      background: rgba(0, 0, 0, 0.45); /* Slightly darker overlay for readability */
+      padding: 2rem 3rem;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-content h1 {
+      color: #fff;
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      color: #e0e0e0;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .booking-form {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .booking-form input,
+    .booking-form button {
+      margin: 0.3rem;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .booking-form button.btn-primary {
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .booking-form button.btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .chatbot-container {
+      position: fixed;
+      bottom: 80px; /* shifted up from 20px */
+      right: 20px;
+      width: 280px;
+      font-family: 'Open Sans', sans-serif;
+      z-index: 10000;
+    }
+
+.chatbot-header {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: glowPulse 2s infinite ease-in-out;
+}
+
+    .chatbot-body {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      overflow: hidden;
+      max-height: 320px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chatbot-body.hidden {
+      display: none;
+    }
+
+    .chat-window {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      height: 200px;
+      background: #f9f9f9;
+    }
+
+    #chatInput {
+      border: none;
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      flex: none;
+      width: calc(100% - 60px);
+    }
+
+    .chatbot-body button {
+      padding: 10px;
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      width: 60px;
+      cursor: pointer;
+    }
+
+    .chat-message {
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      max-width: 85%;
+    }
+
+    .chat-message.user {
+      background-color: #dcf8c6;
+      align-self: flex-end;
+    }
+
+    .chat-message.bot {
+      background-color: #f1f0f0;
+      align-self: flex-start;
+    }
+    
+    .testimonial-item p {
+      color: #f5f5f5; /* Light text for dark background */
+    }
+    .testimonial-author {
+      color: #ccc;
+      font-style: italic;
+    }
+    
+    .testimonial-item.active p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #111;
+      background: #fff3cd;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s ease, color 0.3s ease;
+      display: inline-block;
+    }
+    
+    body.dark-mode .testimonial-item.active p {
+      color: #fff;
+      background: #333a56;
+    }
+    
+    .testimonial-item .testimonial-author {
+      margin-top: 0.5rem;
+      font-style: italic;
+      font-weight: 600;
+      color: #666;
+    }
+    
+    body.dark-mode .testimonial-item .testimonial-author {
+      color: #ccc;
+    }
+
+  @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 5px rgba(0,123,255, 0.4), 0 0 10px rgba(0,123,255, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 15px rgba(0,123,255, 0.6), 0 0 30px rgba(0,123,255, 0.4);
+      }
+      100% {
+        box-shadow: 0 0 5px rgba(0,123,255, 0.4), 0 0 10px rgba(0,123,255, 0.3);
+      }
+    }
+  .chatbot-container.fullscreen {
+    width: 100vw;
+    height: 90vh;
+    bottom: 5vh;
+    right: 0;
+    max-width: none;
+    border-radius: 0;
+    z-index: 10000;
+  }
+  .chatbot-container.fullscreen .chatbot-body {
+    height: calc(100% - 40px);
+  }
+
+
+  .testimonial-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #111 !important;
+    background: #fff3cd;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, color 0.3s ease;
+    display: inline-block;
+  }
+
+  body.dark-mode .testimonial-text {
+    color: #ffffff !important;
+    background: #333a56;
+  }
+</style>
+</head>
+<body>
+  <!-- Navigation Bar (sticky) -->
+  <header>
+    <nav class="navbar" aria-label="Main Navigation">
+      <div class="logo">TourSite</div>
+      <!-- Mobile menu toggle button (visible on small screens) -->
+      <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-menu"><!-- Navigation Links -->
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#destinations">Destinations</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Book Tour Section -->
+  <section id="book-tour">
+    <!-- Hero Section: Full-screen video background with overlay content -->
+    <section id="hero">
+      <!-- Background Video (autoplay, muted for no-sound autoplay) -->
+      <video autoplay muted loop playsinline id="heroVideo" class="hero-video">https://player.
+        <source src="https://cdn.pixabay.com/video/2024/02/28/202368-918049003_large.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <!-- Overlay content on top of the video -->
+      <div class="hero-content">
+        <h1>Explore the World with Us</h1>
+        <p>Find and book amazing tours and destinations.</p>
+        <!-- Booking Form (hero widget) -->
+        <form class="booking-form"><!-- Simple booking search form -->
+          <input type="text" name="destination" placeholder="Where to?" required />
+          <input type="date" name="date" required />
+          <input type="number" name="guests" placeholder="Guests" min="1" value="1" required />
+          <button type="submit" class="btn-primary">Book Now</button>
+        </form>
+      </div>
+    </section>
+  </section>
+
+  <!-- Stats Section: Animated counters (e.g., number of destinations, customers) -->
+  <section id="stats" class="stats-section">
+    <div class="stat">
+      <span class="counter" data-target="100">0</span>
+      <p>Destinations</p>
+    </div>
+    <div class="stat">
+      <span class="counter" data-target="500">0</span>
+      <p>Happy Customers</p>
+    </div>
+    <div class="stat">
+      <span class="counter" data-target="50">0</span>
+      <p>Tour Packages</p>
+    </div>
+  </section>
+
+  <!-- Featured Destinations Section -->
+  <section id="destinations">
+    <h2 class="section-title reveal">Featured Destinations</h2>
+    <div class="destinations-grid">
+      <!-- Destination Card 1 -->
+      <div class="destination-card reveal"><!-- .reveal class for scroll animation -->
+        <!-- Image as a background in CSS for parallax/hover effect -->
+        <div class="destination-image" style="background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80');" role="img" aria-label="Paris"></div>
+        <div class="destination-info">
+          <h3>Paris, France</h3>
+          <p class="destination-desc">The City of Light with iconic sights.</p>
+        </div>
+      </div>
+      <!-- Destination Card 2 -->
+      <div class="destination-card reveal">
+        <div class="destination-image" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80');" role="img" aria-label="Bali"></div>
+        <div class="destination-info">
+          <h3>Bali, Indonesia</h3>
+          <p class="destination-desc">Tropical paradise with vibrant culture.</p>
+        </div>
+      </div>
+      <!-- Destination Card 3 -->
+      <div class="destination-card reveal">
+        <div class="destination-image" style="background-image: url('https://images.pexels.com/photos/358241/pexels-photo-358241.jpeg');" role="img" aria-label="Tokyo"></div>
+        <div class="destination-info">
+          <h3>Tokyo, Japan</h3>
+          <p class="destination-desc">A blend of tradition and futurism.</p>
+        </div>
+      </div>
+      <!-- Destination Card 4 -->
+      <div class="destination-card reveal">
+        <div class="destination-image" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80');" role="img" aria-label="New York"></div>
+        <div class="destination-info">
+          <h3>New York, USA</h3>
+          <p class="destination-desc">The city that never sleeps.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Testimonials Section (slider) -->
+  <section id="testimonials">
+    <h2 class="section-title reveal">What Our Customers Say</h2>
+    <div class="testimonial-slider">
+      <!-- Testimonial Item 1 -->
+      <div class="testimonial-item active"><!-- "active" for first item visible -->
+        <p class="testimonial-text">"An amazing experience! The tour was well organized and so much fun."</p>
+        <p class="testimonial-author">- John Doe</p>
+      </div>
+      <!-- Testimonial Item 2 -->
+      <div class="testimonial-item">
+        <p class="testimonial-text">"Great service and unforgettable trip. Highly recommend this company!"</p>
+        <p class="testimonial-author">- Jane Smith</p>
+      </div>
+      <!-- Testimonial Item 3 -->
+      <div class="testimonial-item">
+        <p class="testimonial-text">"My family and I loved every moment of our vacation. Will book again."</p>
+        <p class="testimonial-author">- The Johnsons</p>
+      </div>
+      <!-- Testimonial Item 4 -->
+      <div class="testimonial-item">
+        <p class="testimonial-text">"Excellent planning and fantastic customer service. Will definitely use TourSite again!"</p>
+        <p class="testimonial-author">- Aisha Khan</p>
+      </div>
+      <!-- Testimonial Item 5 -->
+      <div class="testimonial-item">
+        <p class="testimonial-text">"Everything was smooth from booking to the actual tour. A truly memorable experience."</p>
+        <p class="testimonial-author">- Ravi Mehta</p>
+      </div>
+      <!-- Testimonial Item 6 -->
+      <div class="testimonial-item">
+        <p class="testimonial-text">"Highly professional and very friendly. They made our honeymoon extra special!"</p>
+        <p class="testimonial-author">- Emily & Alex</p>
+      </div>
+      <!-- Testimonial Item 7 -->
+      <div class="testimonial-item">
+        <p class="testimonial-text">"Booking was seamless and the trip exceeded our expectations!"</p>
+        <p class="testimonial-author">- Carlos Rivera</p>
+      </div>
+      <!-- Testimonial Item 8 -->
+      <div class="testimonial-item">
+        <p class="testimonial-text">"Such a professional team. Everything was taken care of flawlessly."</p>
+        <p class="testimonial-author">- Meera Patel</p>
+      </div>
+      <!-- Testimonial Item 9 -->
+      <div class="testimonial-item">
+        <p class="testimonial-text">"We explored places we never thought we would. Thank you for the adventure!"</p>
+        <p class="testimonial-author">- Liam Chen</p>
+      </div>
+      <div class="testimonial-item">
+        <p class="testimonial-text">"Absolutely the best travel experience we've had! Smooth and fun all the way."</p>
+        <p class="testimonial-author">- Suresh Nair</p>
+      </div>
+      <div class="testimonial-item">
+        <p class="testimonial-text">"The itinerary was perfect and well-balanced. Would recommend to anyone!"</p>
+        <p class="testimonial-author">- Ananya Desai</p>
+      </div>
+      <div class="testimonial-item">
+        <p class="testimonial-text">"Their team went above and beyond to accommodate our preferences. 10/10!"</p>
+        <p class="testimonial-author">- Alex Turner</p>
+      </div>
+    </div>
+    <!-- Slider controls (arrows) -->
+    <button class="slider-prev" aria-label="Previous testimonial">&#10094;</button>
+    <button class="slider-next" aria-label="Next testimonial">&#10095;</button>
+  </section>
+
+  <!-- Special Offers Section with Countdown -->
+  <section id="offers">
+    <h2 class="section-title reveal">Special Offers</h2>
+    <div class="offer">
+      <p class="offer-title">🎉 Summer Sale: 20% off all tours!</p>
+      <p class="offer-countdown">Offer ends in <span id="countdown">00d 00h 00m 00s</span></p>
+    </div>
+  </section>
+
+  <!-- Interactive Map Section -->
+  <section id="map-section">
+    <h2 class="section-title reveal">Explore Destinations on Map</h2>
+    <div class="map-container">
+      <!-- World map image with markers (basic image map) -->
+      <img src="https://cdn.pixabay.com/photo/2024/02/03/02/16/earth-8549451_1280.png" alt="World map" class="map-image" />
+      <!-- Clickable map markers (positioned via CSS) -->
+      <div class="map-marker" style="top:40%; left:30%;" title="Paris"></div>
+      <div class="map-marker" style="top:60%; left:45%;" title="Bali"></div>
+      <div class="map-marker" style="top:35%; left:80%;" title="Tokyo"></div>
+      <div class="map-marker" style="top:45%; left:20%;" title="New York"></div>
+    </div>
+  </section>
+
+  <!-- Gallery Section (Instagram-style grid) -->
+  <section id="gallery">
+    <h2 class="section-title reveal">Gallery</h2>
+    <div class="gallery-grid">
+      <!-- Sample gallery images; use real image URLs or paths -->
+      <img src="https://cdn.pixabay.com/photo/2016/08/15/08/22/greece-1594689_1280.jpg" alt="Gallery image 1" loading="lazy" />
+      <img src="https://cdn.pixabay.com/photo/2019/06/13/11/22/golden-gate-bridge-4271364_1280.jpg" alt="Gallery image 2" loading="lazy" />
+      <img src="https://cdn.pixabay.com/photo/2021/08/06/18/51/lake-6526995_1280.jpg" alt="Gallery image 3" loading="lazy" />
+      <img src="https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg" alt="Gallery image 4" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=800&q=80" alt="Gallery image 5" loading="lazy" />
+      <img src="https://cdn.pixabay.com/photo/2020/01/05/07/22/winter-4742436_1280.jpg" alt="Gallery image 6" loading="lazy" />
+    </div>
+  </section>
+
+  <!-- Pricing Calculator Section -->
+  <section id="pricing">
+    <h2 class="section-title reveal">Estimate Your Tour Cost</h2>
+    <div class="pricing-calculator">
+      <label for="tourSelect">Choose Tour:</label>
+      <select id="tourSelect"><!-- Tour options with prices as values -->
+        <option value="82000">Paris - ₹82,000</option>
+        <option value="66000">Bali - ₹66,000</option>
+        <option value="98000">Tokyo - ₹98,000</option>
+        <option value="73000">New York - ₹73,000</option>
+      </select>
+      <label for="numPeople">Number of People:</label>
+      <input type="number" id="numPeople" value="1" min="1" />
+      <label>
+        <input type="checkbox" id="addGuide" value="16000" />
+        Add Personal Guide (+₹16,000)
+      </label>
+      <p class="price-display">Total Price: ₹<span id="totalPrice">82000</span></p>
+    </div>
+  </section>
+
+  <!-- Contact/Booking Form Section -->
+  <section id="contact">
+    <h2 class="section-title reveal">Book Your Tour</h2>
+    <form class="contact-form"><!-- Main booking/contact form -->
+      <label>Name: 
+        <input type="text" name="name" required />
+      </label>
+      <label>Email: 
+        <input type="email" name="email" required />
+      </label>
+      <label>Destination: 
+        <input type="text" name="dest" required />
+      </label>
+      <label>Date: 
+        <input type="date" name="date" required />
+      </label>
+      <label>Message: 
+        <textarea name="message" placeholder="Any special requests?"></textarea>
+      </label>
+      <button type="submit" class="btn-primary">Submit</button>
+    </form>
+  </section>
+
+  <!-- Floating Book Now Button (jumps to booking section) -->
+  <a href="#book-tour" class="floating-btn">Book Now</a>
+
+  <!-- Dark/Light Mode Toggle Button -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 TourSite. All rights reserved.</p>
+  </footer>
+
+  <div id="destination-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h3 id="modal-title"></h3>
+      <p id="modal-desc"></p>
+    </div>
+  </div>
+
+  <div class="chatbot-wrapper">
+    <div class="chatbot-container">
+      <div class="chatbot-header">
+        <span id="chatToggle" style="cursor: pointer;">Chat with us</span>
+        <span id="fullscreenToggle" style="cursor: pointer; color: #fff; font-size: 1.2em; margin-left: 10px;">🗖</span>
+        <span id="minimiseToggle" style="cursor: pointer; color: #fff; font-size: 1.2em; margin-left: 10px; display: none;">🗕</span>
+      </div>
+      <div class="chatbot-body hidden">
+        <div class="chat-window" id="chatWindow"></div>
+        <div class="emoji-wrapper" style="display: flex; align-items: center;">
+          <button id="emojiToggle" class="emoji-toggle" aria-label="Toggle emoji picker">😊</button>
+          <div id="emojiPicker" class="emoji-picker" style="display: none;">
+            <span class="emoji">😀</span>
+            <span class="emoji">😂</span>
+            <span class="emoji">😍</span>
+            <span class="emoji">👍</span>
+            <span class="emoji">🎉</span>
+            <span class="emoji">❤️</span>
+          </div>
+        </div>
+        <input type="text" id="chatInput" placeholder="Type a message..." />
+        <script>
+          document.getElementById('chatInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              sendMessage();
+            }
+          });
+        </script>
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('.booking-form');
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const location = form.querySelector('input[placeholder="Where to?"]').value;
+      const date = form.querySelector('input[type="date"]').value;
+      const guests = form.querySelector('input[type="number"]').value;
+
+      if (!location || !date || !guests) {
+        alert("Please fill in all booking details.");
+        return;
+      }
+
+      alert(`Tour booked successfully!\n\nDestination: ${location}\nDate: ${date}\nGuests: ${guests}`);
+      form.reset();
+    });
+
+    const contactForm = document.querySelector('.contact-form');
+
+    contactForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = contactForm.querySelector('input[name="name"]').value;
+      const email = contactForm.querySelector('input[name="email"]').value;
+      const destination = contactForm.querySelector('input[name="dest"]').value;
+      const date = contactForm.querySelector('input[name="date"]').value;
+      const message = contactForm.querySelector('textarea[name="message"]').value;
+
+      if (!name || !email || !destination || !date) {
+        alert("Please fill out all required fields.");
+        return;
+      }
+
+      alert(`Thank you, ${name}!\n\nYour tour booking for ${destination} on ${date} has been received.\nWe’ll contact you at ${email} shortly.`);
+      contactForm.reset();
+    });
+
+    const cards = document.querySelectorAll('.destination-card');
+    const modal = document.getElementById('destination-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const closeBtn = document.querySelector('.close-btn');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const title = card.querySelector('h3')?.textContent;
+        const desc = card.querySelector('.destination-desc')?.textContent;
+
+        modalTitle.textContent = title;
+        modalDesc.textContent = desc;
+        modal.classList.remove('hidden');
+      });
+    });
+
+    closeBtn?.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+  });
+
+
+
+  async function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const chatWindow = document.getElementById('chatWindow');
+    const message = input.value.trim();
+
+    if (message === '') return;
+
+    const userMsg = document.createElement('div');
+    userMsg.className = 'chat-message user';
+    userMsg.textContent = message;
+    chatWindow.appendChild(userMsg);
+
+    const botMsg = document.createElement('div');
+    botMsg.className = 'chat-message bot';
+    botMsg.textContent = 'Typing...';
+    chatWindow.appendChild(botMsg);
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+    input.value = '';
+
+    try {
+      const response = await fetch('http://localhost:3000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      const data = await response.json();
+      botMsg.textContent = data.reply || 'Sorry, something went wrong.';
+    } catch (error) {
+      console.error('Error:', error);
+      botMsg.textContent = 'Sorry, failed to connect to the chatbot.';
+    }
+
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+  </script>
+
+  <!-- Include external JavaScript file -->
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const testimonials = document.querySelectorAll('.testimonial-item');
+  const prevBtn = document.querySelector('.slider-prev');
+  const nextBtn = document.querySelector('.slider-next');
+  let currentIndex = 0;
+  let intervalId;
+
+  function showTestimonial(index) {
+    testimonials.forEach((item, i) => {
+      item.classList.remove('active');
+      if (i === index) item.classList.add('active');
+    });
+  }
+
+  function nextTestimonial() {
+    currentIndex = (currentIndex + 1) % testimonials.length;
+    showTestimonial(currentIndex);
+  }
+
+  function startAutoSlide() {
+    intervalId = setInterval(nextTestimonial, 4000);
+  }
+
+  function stopAutoSlide() {
+    clearInterval(intervalId);
+  }
+
+  prevBtn.addEventListener('click', () => {
+    stopAutoSlide();
+    currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+    showTestimonial(currentIndex);
+    startAutoSlide();
+  });
+
+  nextBtn.addEventListener('click', () => {
+    stopAutoSlide();
+    nextTestimonial();
+    startAutoSlide();
+  });
+
+  showTestimonial(currentIndex);
+  startAutoSlide();
+});
+</script>
+  <script src="Operations.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const fullscreenToggle = document.getElementById('fullscreenToggle');
+    const minimiseToggle = document.getElementById('minimiseToggle');
+    const chatbotContainer = document.querySelector('.chatbot-container');
+
+    if (fullscreenToggle && chatbotContainer && minimiseToggle) {
+      fullscreenToggle.addEventListener('click', () => {
+        chatbotContainer.classList.add('fullscreen');
+        fullscreenToggle.style.display = 'none';
+        minimiseToggle.style.display = 'inline';
+        chatbotContainer.style.transition = 'all 0.4s ease-in-out';
+      });
+
+      minimiseToggle.addEventListener('click', () => {
+        chatbotContainer.classList.remove('fullscreen');
+        fullscreenToggle.style.display = 'inline';
+        minimiseToggle.style.display = 'none';
+        chatbotContainer.style.transition = 'all 0.4s ease-in-out';
+      });
+    }
+  });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const chatToggle = document.getElementById('chatToggle');
+      const chatbotBody = document.querySelector('.chatbot-body');
+      if (chatToggle && chatbotBody) {
+        chatToggle.addEventListener('click', () => {
+          chatbotBody.classList.toggle('hidden');
+        });
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const emojiToggle = document.getElementById('emojiToggle');
+      const emojiPicker = document.getElementById('emojiPicker');
+      const chatInput = document.getElementById('chatInput');
+
+      if (emojiToggle && emojiPicker && chatInput) {
+        emojiToggle.addEventListener('click', () => {
+          emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        emojiPicker.querySelectorAll('.emoji').forEach(emoji => {
+          emoji.addEventListener('click', () => {
+            chatInput.value += emoji.textContent;
+            emojiPicker.style.display = 'none';
+            chatInput.focus();
+          });
+        });
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const emojiToggle = document.getElementById('emojiToggle');
+      const emojiPicker = document.getElementById('emojiPicker');
+      const chatInput = document.getElementById('chatInput');
+    
+      if (emojiToggle && emojiPicker && chatInput) {
+        emojiToggle.addEventListener('click', () => {
+          emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'flex' : 'none';
+        });
+    
+        emojiPicker.querySelectorAll('.emoji').forEach(emoji => {
+          emoji.addEventListener('click', () => {
+            chatInput.value += emoji.textContent;
+            emojiPicker.style.display = 'none';
+            chatInput.focus();
+          });
+        });
+      }
+    });
+  </script>
+  </body>
+</html>
